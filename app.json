@@ -14,6 +14,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.example.familytrack",
+      "config": {
+        "googleMapsApiKey": "REPLACE_WITH_IOS_MAPS_API_KEY"
+      },
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"],
         "NSLocationWhenInUseUsageDescription": "FamilyTrack shows your location to your parent while the app is running.",
@@ -22,6 +25,11 @@
     },
     "android": {
       "package": "com.example.familytrack",
+      "config": {
+        "googleMaps": {
+          "apiKey": "REPLACE_WITH_ANDROID_MAPS_API_KEY"
+        }
+      },
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",

@@ -6,7 +6,7 @@ import { subscribeStopRequest, requestStop, clearStopRequest, setChildStatus } f
 
 // Child view: shows that sharing is on and lets the child ASK to stop.
 // Actually stopping only happens after the parent approves (status -> approved).
-export default function ChildTrackingScreen({ familyId }) {
+export default function ChildTrackingScreen({ familyId, onReset }) {
   const [tracking, setTracking] = useState(false);
   const [requestState, setRequestState] = useState(null);
 
@@ -37,6 +37,21 @@ export default function ChildTrackingScreen({ familyId }) {
     Alert.alert("Request sent", "Your parent needs to approve this on their phone.");
   }
 
+  function confirmReset() {
+    Alert.alert("Reset this phone?", "For testing only: stops sharing and forgets the pairing.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Reset",
+        style: "destructive",
+        onPress: async () => {
+          await stopTracking();
+          await setChildStatus(familyId, "stopped");
+          onReset?.();
+        },
+      },
+    ]);
+  }
+
   return (
     <View style={styles.container}>
       <View style={[styles.dot, { backgroundColor: tracking ? colors.good : colors.dim }]} />
@@ -60,6 +75,10 @@ export default function ChildTrackingScreen({ familyId }) {
       )}
 
       <Text style={styles.note}>Paired to family {familyId}</Text>
+
+      <TouchableOpacity onPress={confirmReset}>
+        <Text style={styles.reset}>Reset (testing)</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -73,4 +92,5 @@ const styles = StyleSheet.create({
   btnDisabled: { opacity: 0.6 },
   btnText: { color: colors.text, fontWeight: "700", fontSize: 15 },
   note: { color: colors.dim, fontSize: 12, marginTop: 24 },
+  reset: { color: colors.dim, fontSize: 12, marginTop: 16, textDecorationLine: "underline" },
 });

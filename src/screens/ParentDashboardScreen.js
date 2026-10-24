@@ -17,7 +17,7 @@ function ago(ts) {
   return Math.round(s / 3600) + "h ago";
 }
 
-export default function ParentDashboardScreen({ familyId }) {
+export default function ParentDashboardScreen({ familyId, onReset }) {
   const [childData, setChildData] = useState({});
   const [stopReq, setStopReq] = useState(null);
   const [pin, setPin] = useState("");
@@ -73,7 +73,19 @@ export default function ParentDashboardScreen({ familyId }) {
             <Text style={styles.statValue}>{loc?.accuracy ? Math.round(loc.accuracy) + " m" : "—"}</Text>
           </View>
         </View>
-        <Text style={styles.codeDim}>Pairing code: {familyId}</Text>
+        <View style={styles.panelFooter}>
+          <Text style={styles.codeDim}>Pairing code: {familyId}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert("Reset this phone?", "For testing only: forgets this family on this device.", [
+                { text: "Cancel", style: "cancel" },
+                { text: "Reset", style: "destructive", onPress: () => onReset?.() },
+              ])
+            }
+          >
+            <Text style={styles.reset}>Reset (testing)</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Modal visible={!!showStopModal} transparent animationType="fade">
@@ -116,7 +128,9 @@ const styles = StyleSheet.create({
   stat: { flex: 1 },
   statLabel: { color: colors.dim, fontSize: 12 },
   statValue: { color: colors.text, fontSize: 20, fontWeight: "700" },
-  codeDim: { color: colors.dim, fontSize: 12, marginTop: 12 },
+  panelFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 12 },
+  codeDim: { color: colors.dim, fontSize: 12 },
+  reset: { color: colors.dim, fontSize: 12, textDecorationLine: "underline" },
   modalWrap: { flex: 1, backgroundColor: "rgba(0,0,0,0.6)", justifyContent: "center", padding: 24 },
   modal: { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: 14, padding: 20 },
   modalTitle: { color: colors.text, fontSize: 18, fontWeight: "800" },

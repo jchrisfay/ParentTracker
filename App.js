@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { colors } from "./src/theme";
-import { getRole, saveRole, getFamilyId, saveFamilyId } from "./src/storage";
+import { getRole, saveRole, getFamilyId, saveFamilyId, clearAll } from "./src/storage";
 import RoleSelectScreen from "./src/screens/RoleSelectScreen";
 import ParentSetupScreen from "./src/screens/ParentSetupScreen";
 import ParentDashboardScreen from "./src/screens/ParentDashboardScreen";
@@ -34,6 +34,14 @@ export default function App() {
     setFamilyId(id);
   }
 
+  // Testing helper: forget the role + pairing so you can set this phone up
+  // again from scratch. The child screen stops tracking before calling this.
+  async function resetApp() {
+    await clearAll();
+    setFamilyId(null);
+    setRole(null);
+  }
+
   if (loading) {
     return (
       <View style={styles.center}>
@@ -46,12 +54,12 @@ export default function App() {
 
   if (role === "parent") {
     if (!familyId) return <ParentSetupScreen onReady={setFamily} />;
-    return <ParentDashboardScreen familyId={familyId} />;
+    return <ParentDashboardScreen familyId={familyId} onReset={resetApp} />;
   }
 
   // child
   if (!familyId) return <ChildSetupScreen onPaired={setFamily} />;
-  return <ChildTrackingScreen familyId={familyId} />;
+  return <ChildTrackingScreen familyId={familyId} onReset={resetApp} />;
 }
 
 const styles = StyleSheet.create({
