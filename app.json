@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "FamilyTrack",
+    "slug": "familytrack",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0d1117"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.familytrack",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"],
+        "NSLocationWhenInUseUsageDescription": "FamilyTrack shows your location to your parent while the app is running.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "FamilyTrack shares your location with your parent so your family can see where you are. A system indicator stays visible while sharing is on."
+      }
+    },
+    "android": {
+      "package": "com.example.familytrack",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "FamilyTrack shares your location with your parent so your family can see where you are.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ]
+    ]
+  }
+}
